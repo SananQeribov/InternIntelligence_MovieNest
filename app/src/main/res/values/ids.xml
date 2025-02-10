@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="imageView" type="id" />
+    <item name="bottomNav" type="id" />
+    <item name="tvErrorMessage" type="id" />
+    <item name="tvMostPopular" type="id" />
+    <item name="recyclerPopularMovies" type="id" />
+</resources>

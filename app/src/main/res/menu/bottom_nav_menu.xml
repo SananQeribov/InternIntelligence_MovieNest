@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+
+    <item
+        android:id="@+id/home"
+
+        android:icon="@drawable/home_svgrepo_com"
+        android:title=""
+        android:iconTint="@color/design_default_color_secondary_variant"
+
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/category"
+        android:icon="@drawable/search"
+        android:title=""
+        android:iconTint="@color/design_default_color_secondary_variant"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/saved"
+        android:icon="@drawable/bookmark"
+        android:title=""
+        android:iconTint="@color/design_default_color_secondary_variant"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/profile"
+        android:title=""
+        android:iconTint="@color/design_default_color_secondary_variant"
+
+        app:showAsAction="ifRoom" />
+</menu>

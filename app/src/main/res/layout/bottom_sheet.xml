@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white"
+    tools:ignore="WebViewLayout">
+
+    <!-- WebView for YouTube Video -->
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+        android:id="@+id/youtubePlayerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:autoPlay="false"/>
+
+
+
+    <!-- Movie Description -->
+    <TextView
+        android:id="@+id/movieDescription"
+        android:layout_width="386dp"
+        android:layout_height="108dp"
+        android:layout_marginBottom="16dp"
+        android:text="Movie Description"
+        android:textSize="14sp" />
+
+</LinearLayout>
