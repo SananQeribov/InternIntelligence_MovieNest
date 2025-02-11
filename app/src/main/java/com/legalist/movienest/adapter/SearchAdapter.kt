@@ -15,9 +15,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.ArrayList
 
 class SearchAdapter(private var mList: ArrayList<Category>) :
-    RecyclerView.Adapter<SearchAdapter.LanguageViewHolder>() {
+    RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
-    inner class LanguageViewHolder(binding: CategoryItemBinding) :
+    inner class SearchViewHolder(binding: CategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val logo: ImageView = binding.logoIv
         val titleTv: TextView = binding.titleTv
@@ -34,13 +34,13 @@ class SearchAdapter(private var mList: ArrayList<Category>) :
         //notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val binding =
             CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return LanguageViewHolder(binding)
+        return SearchViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: LanguageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val languageData = mList[position]
         holder.logo.setImageResource(languageData.imageUrl)
         holder.titleTv.text = languageData.title
@@ -73,7 +73,7 @@ class SearchAdapter(private var mList: ArrayList<Category>) :
     }
 
     override fun onBindViewHolder(
-        holder: LanguageViewHolder,
+        holder: SearchViewHolder,
         position: Int,
         payloads: MutableList<Any>
     ) {
