@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="com.legalist.movienest.ui.CategoryFragment"
+        android:name="com.legalist.movienest.ui.SearchFragment"
         android:label="fragment_category"
         tools:layout="@layout/fragment_category" >
         <action

@@ -17,6 +17,7 @@ recyclerview = "1.1.0"
 glide = "4.15.1"
 firebaseStorageKtx = "21.0.1"
 activityVersion = "1.8.0"
+playServicesBase = "18.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,7 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activityVersion" }
+play-services-base = { group = "com.google.android.gms", name = "play-services-base", version.ref = "playServicesBase" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -1,6 +1,8 @@
 package com.legalist.movienest.ui
-
 import android.Manifest
+import android.app.AlertDialog
+import android.app.ProgressDialog
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
@@ -9,6 +11,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,7 +24,7 @@ import com.google.firebase.storage.StorageReference
 import com.legalist.movienest.R
 import com.legalist.movienest.base.BaseFragment
 import com.legalist.movienest.databinding.FragmentProfileBinding
-import com.squareup.picasso.Picasso
+
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     private var selectedImageUri: Uri? = null
@@ -52,7 +56,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 if (isGranted) {
                     launchNewPhotoPicker()
                 } else {
-                    Toast.makeText(context, "Please grant permission", Toast.LENGTH_LONG).show()
+                    showPermissionDialog()
                 }
             }
     }
@@ -87,27 +91,59 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
     }
 
+    private fun showPermissionDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("İzin Gerekli")
+            .setMessage("Profil fotoğrafı seçebilmek için izin vermelisiniz.")
+            .setPositiveButton("Ayarlar") { _, _ ->
+                val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                intent.data = Uri.fromParts("package", requireContext().packageName, null)
+                startActivity(intent)
+            }
+            .setNegativeButton("İptal", null)
+            .show()
+    }
+
     private fun launchNewPhotoPicker() {
         newPhotoPicker.launch("image/*")
     }
 
     private fun uploadImageToFirebase() {
-        val userId = mAuth.currentUser?.uid ?: return
-        val imageName = "images/$userId.jpg"
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            Toast.makeText(context, "Lütfen önce giriş yapın", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val userId = user.uid
+        if (selectedImageUri == null) {
+            Toast.makeText(context, "Lütfen bir resim seçin", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val imageName = "images/${userId}.jpg"
         val storageRef = storageReference.child(imageName)
 
-        selectedImageUri?.let { uri ->
-            storageRef.putFile(uri)
-                .addOnSuccessListener {
-                    storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                        saveUserDataToDatabase(userId, downloadUri.toString())
-                    }
+        val progressDialog = ProgressDialog(requireContext()).apply {
+            setMessage("Yükleniyor...")
+            setCancelable(false)
+            show()
+        }
+
+        storageRef.putFile(selectedImageUri!!)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                    saveUserDataToDatabase(userId, downloadUri.toString())
+                    progressDialog.dismiss()
+                    Toast.makeText(context, "Yükleme başarılı!", Toast.LENGTH_SHORT).show()
                 }
-                .addOnFailureListener {
-                    Toast.makeText(context, "Upload failed: ${it.message}", Toast.LENGTH_SHORT).show()
-                }
-        } ?: Toast.makeText(context, "No image selected", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                progressDialog.dismiss()
+                Toast.makeText(context, "Yükleme başarısız: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
     }
+
 
     private fun saveUserDataToDatabase(userId: String, imageUrl: String) {
         val userAge = binding.AgeEditText.text.toString()
@@ -123,7 +159,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
         reference.child(userId).setValue(userData)
             .addOnSuccessListener {
-                Toast.makeText(context, "Upload successful", Toast.LENGTH_LONG).show()
+                Snackbar.make(binding.root, "Profil güncellendi!", Snackbar.LENGTH_LONG).show()
             }
             .addOnFailureListener {
                 Toast.makeText(context, "Database error: ${it.message}", Toast.LENGTH_SHORT).show()
@@ -143,7 +179,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
                     val userImageUrl = it["UserImageUrl"] as? String
                     userImageUrl?.let { url ->
-                        Picasso.get().load(url).into(binding.profile)
+                        Glide.with(requireContext()).load(url).placeholder(R.drawable.spiderman).into(binding.profile)
                     }
                 }
             }
@@ -154,12 +190,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         })
     }
 
-    override fun inflateBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ): FragmentProfileBinding {
+    override fun inflateBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentProfileBinding {
         return FragmentProfileBinding.inflate(inflater, container, false)
     }
 }
-
-

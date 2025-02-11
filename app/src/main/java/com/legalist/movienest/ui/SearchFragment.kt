@@ -11,7 +11,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
-class CategoryFragment : BaseFragment<FragmentCategoryBinding>() {
+class SearchFragment : BaseFragment<FragmentCategoryBinding>() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchView: SearchView

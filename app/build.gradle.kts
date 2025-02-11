@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.firebase.storage.ktx)
     implementation(libs.activity)
+    implementation(libs.play.services.base)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
